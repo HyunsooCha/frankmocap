@@ -1,0 +1,27 @@
+conda create -n frankmocap python=3.7
+conda activate frankmocap
+
+conda install pytorch==1.7.1 torchvision==0.8.2 torchaudio==0.7.2 cudatoolkit=11.0 -c pytorch
+
+# Install basic dependencies
+sudo apt-get install libglu1-mesa libxi-dev libxmu-dev libglu1-mesa-dev freeglut3-dev libosmesa6-dev
+
+# Install ffmpeg
+conda install ffmpeg
+
+# Install other required libraries
+pip install -r docs/requirements.txt
+
+pip install pytorch3d
+
+python -m pip install detectron2==0.5 -f \
+  https://dl.fbaipublicfiles.com/detectron2/wheels/cu110/torch1.7/index.html
+
+gpu2 sh scripts/install_frankmocap.sh
+# detectors/hand_object_detector가 예전 gpu에서만 install이 된다.
+
+pip install scikit-learn
+
+sudo apt install xvfb
+sudo add-apt-repository universe
+sudo apt-get install pymol

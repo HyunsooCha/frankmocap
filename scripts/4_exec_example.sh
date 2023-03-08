@@ -1,0 +1,1 @@
+docker exec frankmocap python face_cropper.py --root_path /root/'GitHub/frankmocap/sample_data' --video_file syuka_1_cropped.mp4
