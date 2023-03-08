@@ -87,7 +87,7 @@ RUN python -m ensurepip --default-pip
 RUN pip install --upgrade pip
 
 WORKDIR /root/GitHub/temp
-RUN git clone https://github.com/facebookresearch/frankmocap.git
+RUN git clone https://github.com/HyunsooCha/frankmocap.git
 WORKDIR /root/GitHub/temp/frankmocap
 RUN sh scripts/install_frankmocap.sh
 
