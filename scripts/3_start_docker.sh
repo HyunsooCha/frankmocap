@@ -2,4 +2,4 @@
 set -e
 
 docker start frankmocap
-docker attach --detach-keys "ctrl-b" frankmocap
+docker attach --detach-keys "ctrl-z" frankmocap
