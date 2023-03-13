@@ -89,9 +89,9 @@ RUN conda install -y ffmpeg
 RUN python -m ensurepip --default-pip
 RUN pip install --upgrade pip
 
-WORKDIR /root/GitHub/temp
+WORKDIR /root/GitHub
 RUN git clone https://github.com/HyunsooCha/frankmocap.git
-WORKDIR /root/GitHub/temp/frankmocap
+WORKDIR /root/GitHub/frankmocap
 RUN sh scripts/install_frankmocap.sh
 
 
@@ -197,7 +197,6 @@ alias python='ntfy done python'" >> ~/.zshrc
 
 
 ## set up the working directory
-RUN rm -rf /root/GitHub/temp
 WORKDIR /root/GitHub/frankmocap
 
 EXPOSE 22

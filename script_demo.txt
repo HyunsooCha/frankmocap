@@ -1,6 +1,6 @@
 python -m demo.demo_handmocap --input_path ./sample_data/single_totalbody.mp4 --out_dir ./mocap_output
 
 python -m demo.demo_handmocap --input_path ./sample_data/syuka_train_cropped.mp4 --out_dir ./mocap_output --view_type ego_centric
-xvfb-run --server-args="-screen 0 1024x768x24" -a python -m demo.demo_handmocap --input_path ./sample_data/syuka_train_cropped.mp4 --out_dir ./mocap_output --view_type ego_centric
+xvfb-run -a python -m demo.demo_handmocap --input_path ./sample_data/syuka_train_cropped.mp4 --out_dir ./mocap_output --view_type ego_centric
 
 python -m demo.demo_handmocap --input_path ./sample_data/syuka_train_cropped.mp4 --out_dir ./mocap_output --view_type ego_centric --renderer_type pytorch3d
