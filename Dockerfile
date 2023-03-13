@@ -44,6 +44,7 @@ RUN apt-get -y update && \
 RUN apt-get install -y language-pack-en && sudo update-locale
 RUN apt-get install -y libglu1-mesa libxi-dev libxmu-dev libglu1-mesa-dev freeglut3-dev libosmesa6-dev
 RUN apt install -y xvfb && \
+    apt-get install -y software-properties-common && \
     add-apt-repository universe && \
     apt-get install -y pymol
 ## zsh
