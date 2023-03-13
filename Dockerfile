@@ -41,9 +41,11 @@ RUN apt-get update && apt-get dist-upgrade -y && apt-get install -y ffmpeg libsm
     protobuf-compiler
 RUN apt-get -y update && \ 
     apt-get install -y git nano zsh tzdata vim openssh-server sudo ufw curl
-RUN sudo apt-get install -y language-pack-en && sudo update-locale
-RUN sudo apt-get install -y libglu1-mesa libxi-dev libxmu-dev libglu1-mesa-dev freeglut3-dev libosmesa6-dev
-
+RUN apt-get install -y language-pack-en && sudo update-locale
+RUN apt-get install -y libglu1-mesa libxi-dev libxmu-dev libglu1-mesa-dev freeglut3-dev libosmesa6-dev
+RUN apt install -y xvfb && \
+    add-apt-repository universe && \
+    apt-get install -y pymol
 ## zsh
 SHELL ["/bin/zsh", "-c"]
 RUN chsh -s `which zsh`
