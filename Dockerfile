@@ -71,7 +71,6 @@ RUN sed -i 's/ZSH_THEME=.*/ZSH_THEME="powerlevel10k\/powerlevel10k"/g' /root/.zs
 RUN echo 'source /root/.p10k.zsh' >> /root/.zshrc && \
     echo 'POWERLEVEL10K_DISABLE_CONFIGURATION=true' >> /root/.zshrc
 
-
 # Install MiniConda
 RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh && \
     /bin/bash ~/miniconda.sh -b -p /opt/conda && \
@@ -95,16 +94,6 @@ ENV TORCH_CUDA_ARCH_LIST="3.5;5.0;6.0;6.1;7.0;7.5;8.0;8.6+PTX"
 # Install basic torch (11.6)
 RUN . ~/.zshrc && conda install pytorch==1.12.1 torchvision torchaudio cudatoolkit=11.6 -c pytorch -c conda-forge -y 
 
-# install other required libraries of frankmocap
-RUN . ~/.zshrc && \
-    pip install pip gdown opencv-python PyOpenGL PyOpenGL_accelerate pycocotools pafy youtube-dl scipy pillow \
-        easydict cython cffi msgpack pyyaml tensorboardX tqdm jinja2 smplx sklearn opendr chumpy torchgeometry scikit-learn
-
-WORKDIR /root/GitHub
-RUN git clone https://github.com/HyunsooCha/frankmocap.git
-WORKDIR /root/GitHub/frankmocap
-RUN sh scripts/install_frankmocap.sh
-
 # detectron2 installation
 WORKDIR /root/GitHub
 RUN git clone --recurse-submodules https://github.com/jiangwei221/detectron2.git && \
@@ -118,19 +107,19 @@ RUN . ~/.zshrc && \
 
 # torch3d installation
 WORKDIR /root/GitHub
-RUN . ~/.zshrc && \
-    conda install -c fvcore -c iopath -c conda-forge fvcore iopath
-RUN . ~/.zshrc && \
-    conda install -c bottler nvidiacub
-RUN . ~/.zshrc && \
-    conda install jupyter
-RUN . ~/.zshrc && \
-    pip install scikit-image matplotlib imageio plotly opencv-python black usort flake8 flake8-bugbear flake8-comprehensions
-RUN . ~/.zshrc && \
-    conda install pytorch3d -c pytorch3d
+RUN conda install -c fvcore -c iopath -c conda-forge fvcore iopath
+RUN conda install -c bottler nvidiacub
+RUN conda install jupyter
+RUN pip install scikit-image matplotlib imageio plotly opencv-python black usort flake8 flake8-bugbear flake8-comprehensions
+RUN conda install pytorch3d -c pytorch3d
 
 RUN pip install numpy face_alignment natsort
-RUN pip install gdown opencv-python PyOpenGL PyOpenGL_accelerate pycocotools pafy youtube-dl scipy pillow easydict cython cffi msgpack pyyaml tensorboardX tqdm jinja2 smplx scikit-learn opendr chumpy
+RUN pip install pip torchgeometry gdown opencv-python PyOpenGL PyOpenGL_accelerate pycocotools pafy youtube-dl scipy pillow easydict cython cffi msgpack pyyaml tensorboardX tqdm jinja2 smplx scikit-learn opendr chumpy
+
+WORKDIR /root/GitHub
+RUN git clone https://github.com/HyunsooCha/frankmocap.git
+WORKDIR /root/GitHub/frankmocap
+RUN sh scripts/install_frankmocap.sh
 
 ## Install cmake
 WORKDIR /root
