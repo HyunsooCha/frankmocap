@@ -15,8 +15,8 @@ echo "[INFO] docker run finished"
 docker start frankmocap
 echo "[INFO] docker start finished"
 docker exec frankmocap sh scripts/install_frankmocap.sh
-mkdir -p extra_data/smpl
-cd ./extra_data/smpl/
+mkdir -p ../extra_data/smpl
+cd ../extra_data/smpl/
 wget https://www.dropbox.com/s/4xbm2cy65uxcxbb/basicModel_neutral_lbs_10_207_0_v1.0.0.pkl
 wget https://www.dropbox.com/s/e8m5v88cd5lzz70/SMPLX_NEUTRAL.pkl
 cd ../..
