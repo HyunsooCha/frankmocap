@@ -47,7 +47,8 @@ def main(args):
 
     print('[INFO] save hand bounding boxes using frankmocap...')
     start = time.time()
-    os.system('xvfb-run -a python -m demo.demo_handmocap --input_path {} --out_dir {} --view_type ego_centric --save_bbox_output'.format(path1, output_dir))
+    os.system('./xvfb-run-safe python -m demo.demo_handmocap --input_path {} --out_dir {} --view_type ego_centric --save_bbox_output'.format(path1, output_dir))
+    # os.system('xvfb-run -a python -m demo.demo_handmocap --input_path {} --out_dir {} --view_type ego_centric --save_bbox_output'.format(path1, output_dir))
     # os.system('python -m demo.demo_handmocap --input_path {} --out_dir {} --view_type ego_centric --save_bbox_output --renderer_type pytorch3d'.format(path1, output_dir))
     print('[INFO] save hand bounding boxes complete! time: ', time.time()-start)
 
