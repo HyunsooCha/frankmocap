@@ -14,9 +14,9 @@ def main(args):
 
     video_name = video_file.split('.')[0]
     raw_path = os.path.join(root_path, video_file)
-    path1 = os.path.join(root_path, video_name+'_frames')
-    path2 = os.path.join(root_path, video_name+'_cropped_frames')
-    output_dir = os.path.join(root_path, video_name+'_mocap_output')
+    path1 = os.path.join('mocap_output', video_name+'_frames')
+    path2 = os.path.join('mocap_output', video_name+'_cropped_frames')
+    output_dir = os.path.join('mocap_output', video_name+'_mocap_output')
     if not os.path.exists(path1):
         os.makedirs(path1)
     if not os.path.exists(path2):
