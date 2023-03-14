@@ -89,12 +89,6 @@ RUN conda install -y ffmpeg
 RUN python -m ensurepip --default-pip
 RUN pip install --upgrade pip
 
-WORKDIR /root/GitHub
-RUN git clone https://github.com/HyunsooCha/frankmocap.git
-WORKDIR /root/GitHub/frankmocap
-RUN sh scripts/install_frankmocap.sh
-
-
 WORKDIR /root
 ENV FORCE_CUDA 1
 ENV TORCH_CUDA_ARCH_LIST="3.5;5.0;6.0;6.1;7.0;7.5;8.0;8.6+PTX"
@@ -105,6 +99,11 @@ RUN . ~/.zshrc && conda install pytorch==1.12.1 torchvision torchaudio cudatoolk
 RUN . ~/.zshrc && \
     pip install pip gdown opencv-python PyOpenGL PyOpenGL_accelerate pycocotools pafy youtube-dl scipy pillow \
         easydict cython cffi msgpack pyyaml tensorboardX tqdm jinja2 smplx sklearn opendr chumpy torchgeometry scikit-learn
+
+WORKDIR /root/GitHub
+RUN git clone https://github.com/HyunsooCha/frankmocap.git
+WORKDIR /root/GitHub/frankmocap
+RUN sh scripts/install_frankmocap.sh
 
 # detectron2 installation
 WORKDIR /root/GitHub
