@@ -136,10 +136,10 @@ RUN pip install ninja && \
 RUN pip install numpy face_alignment natsort
 RUN pip install pip torchgeometry gdown opencv-python PyOpenGL PyOpenGL_accelerate pycocotools pafy youtube-dl scipy pillow easydict cython cffi msgpack pyyaml tensorboardX tqdm jinja2 smplx scikit-learn opendr chumpy
 
-WORKDIR /root/Archive
-RUN git clone https://github.com/HyunsooCha/frankmocap.git
-WORKDIR /root/Archive/frankmocap
-RUN sh scripts/install_frankmocap.sh
+# WORKDIR /root/Archive
+# RUN git clone https://github.com/HyunsooCha/frankmocap.git
+# WORKDIR /root/Archive/frankmocap
+# RUN sh scripts/install_frankmocap.sh
 
 ## ntfy
 RUN python3 -m pip install git+https://github.com/dschep/ntfy.git@master --upgrade
