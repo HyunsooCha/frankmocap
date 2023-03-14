@@ -1,5 +1,5 @@
 #!/bin/bash
-
+set -e
 # Copyright (c) Facebook, Inc. and its affiliates.
 
 mkdir -p detectors
@@ -8,7 +8,8 @@ cd detectors
 pip install gdown
 
 # Install 100-DOH hand-object detectors
-git clone git@github.com:ddshan/hand_object_detector.git
+# git clone git@github.com:ddshan/hand_object_detector.git
+git clone https://github.com/ddshan/hand_object_detector
 if [ ! -d hand_object_detector ]; then
     git clone https://github.com/ddshan/hand_object_detector
 fi
@@ -18,7 +19,8 @@ python setup.py build develop
 cd ../../
 
 # Install 100-DOH hand-only detectors
-git clone git@github.com:ddshan/hand_detector.d2.git
+# git clone git@github.com:ddshan/hand_detector.d2.git
+git clone https://github.com/ddshan/hand_detector.d2.git
 if [ ! -d hand_detector.d2 ]; then
     git clone https://github.com/ddshan/hand_detector.d2.git
 fi

@@ -1,11 +1,12 @@
 #!/bin/bash
-
+set -e
 # Copyright (c) Facebook, Inc. and its affiliates.
 
 mkdir -p detectors
 cd detectors
 
-git clone git@github.com:jhugestar/lightweight-human-pose-estimation.pytorch.git
+# git@github.com:jhugestar/lightweight-human-pose-estimation.pytorch.git
+git clone https://github.com/jhugestar/lightweight-human-pose-estimation.pytorch.git 
 if [ ! -d lightweight-human-pose-estimation.pytorch ]; then
     git clone https://github.com/jhugestar/lightweight-human-pose-estimation.pytorch.git
 fi

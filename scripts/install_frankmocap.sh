@@ -1,5 +1,5 @@
 #!/bin/bash
-
+set -e
 # Copyright (c) Facebook, Inc. and its affiliates.
 
 echo ""
