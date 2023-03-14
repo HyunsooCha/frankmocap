@@ -283,7 +283,9 @@ class Ego_Centric_Detector(BodyPoseEstimator):
         bboxes, hand_types = self.__get_raw_hand_bbox(img)
 
         if bboxes is not None:
-            assert bboxes.shape[0] <= 2, "Ego centric version only supports one person per image"
+            if bboxes.shape[0] > 2:
+                print('[WARN] Ego centric version only supports one person per image')
+            # assert bboxes.shape[0] <= 2, "Ego centric version only supports one person per image"
 
             left_bbox = bboxes[hand_types==0]
             if len(left_bbox)>0:
