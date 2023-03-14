@@ -1,4 +1,5 @@
-FROM nvidia/cuda:11.6.2-cudnn8-devel-ubuntu20.04
+# FROM nvidia/cuda:11.6.2-cudnn8-devel-ubuntu20.04
+FROM pytorch/pytorch:1.10.0-cuda11.3-cudnn8-devel
 LABEL maintainer "Hyunsoo Cha <729steven@gmail.com>"
 LABEL title="Docker for FrankMocap"
 LABEL version="0.1"
@@ -71,28 +72,42 @@ RUN sed -i 's/ZSH_THEME=.*/ZSH_THEME="powerlevel10k\/powerlevel10k"/g' /root/.zs
 RUN echo 'source /root/.p10k.zsh' >> /root/.zshrc && \
     echo 'POWERLEVEL10K_DISABLE_CONFIGURATION=true' >> /root/.zshrc
 
-# Install MiniConda
-RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh && \
-    /bin/bash ~/miniconda.sh -b -p /opt/conda && \
-    rm ~/miniconda.sh && \
-    ln -s /opt/conda/etc/profile.d/conda.sh /etc/profile.d/conda.sh && \
-    echo ". /opt/conda/etc/profile.d/conda.sh" >> ~/.zshrc && \
+## Install cmake
+WORKDIR /root
+RUN apt-get remove -y cmake && \ 
+    mkdir cmake && cd cmake && \
+    wget https://github.com/Kitware/CMake/releases/download/v3.24.2/cmake-3.24.2-linux-x86_64.sh && \
+    chmod 777 ./cmake-3.24.2-linux-x86_64.sh && \
+    ./cmake-3.24.2-linux-x86_64.sh --skip-license
+ENV PATH /home/cmake/bin:$PATH
+
+# # Install MiniConda
+# RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh && \
+#     /bin/bash ~/miniconda.sh -b -p /opt/conda && \
+#     rm ~/miniconda.sh && \
+#     ln -s /opt/conda/etc/profile.d/conda.sh /etc/profile.d/conda.sh && \
+#     echo ". /opt/conda/etc/profile.d/conda.sh" >> ~/.zshrc && \
+#     echo "conda activate base" >> ~/.zshrc
+# ENV PATH /opt/conda/bin:$PATH
+
+## Anaconda3
+RUN echo ". /opt/conda/etc/profile.d/conda.sh" >> ~/.zshrc && \
     echo "conda activate base" >> ~/.zshrc
 ENV PATH /opt/conda/bin:$PATH
 
 RUN  . ~/.zshrc && conda init zsh && \
     conda update conda
 
-WORKDIR /root/GitHub/frankmocap
 RUN conda install -y ffmpeg
 RUN python -m ensurepip --default-pip
 RUN pip install --upgrade pip
 
-WORKDIR /root
+# WORKDIR /root
 ENV FORCE_CUDA 1
-ENV TORCH_CUDA_ARCH_LIST="3.5;5.0;6.0;6.1;7.0;7.5;8.0;8.6+PTX"
+ENV TORCH_CUDA_ARCH_LIST="8.6+PTX"
 # Install basic torch (11.6)
-RUN . ~/.zshrc && conda install pytorch==1.12.1 torchvision torchaudio cudatoolkit=11.6 -c pytorch -c conda-forge -y 
+# RUN . ~/.zshrc && conda install pytorch==1.12.1 torchvision torchaudio cudatoolkit=11.6 -c pytorch -c conda-forge -y 
+# RUN conda install -y pytorch==1.10.1 torchvision==0.11.2 torchaudio==0.10.1 cudatoolkit=11.3 -c pytorch -c conda-forge
 
 # detectron2 installation
 WORKDIR /root/GitHub
@@ -105,30 +120,26 @@ RUN . ~/.zshrc && \
     pip install setuptools==59.5.0 && \
     pip list
 
-# torch3d installation
-WORKDIR /root/GitHub
-RUN conda install -c fvcore -c iopath -c conda-forge fvcore iopath
-RUN conda install -c bottler nvidiacub
-RUN conda install jupyter
-RUN pip install scikit-image matplotlib imageio plotly opencv-python black usort flake8 flake8-bugbear flake8-comprehensions
-RUN conda install pytorch3d -c pytorch3d
+# pytorch3d installation
+# WORKDIR /root/GitHub
+# RUN conda install -c fvcore -c iopath -c conda-forge fvcore iopath
+# RUN conda install -c bottler nvidiacub
+# RUN conda install jupyter
+# RUN pip install scikit-image matplotlib imageio plotly opencv-python black usort flake8 flake8-bugbear flake8-comprehensions
+# RUN conda install pytorch3d -c pytorch3d
+
+## Install PyTorch3D
+WORKDIR /root/GitHub/
+RUN pip install ninja && \
+    pip install "git+https://github.com/facebookresearch/pytorch3d.git"
 
 RUN pip install numpy face_alignment natsort
 RUN pip install pip torchgeometry gdown opencv-python PyOpenGL PyOpenGL_accelerate pycocotools pafy youtube-dl scipy pillow easydict cython cffi msgpack pyyaml tensorboardX tqdm jinja2 smplx scikit-learn opendr chumpy
 
-WORKDIR /root/GitHub
+WORKDIR /root/Archive
 RUN git clone https://github.com/HyunsooCha/frankmocap.git
-WORKDIR /root/GitHub/frankmocap
+WORKDIR /root/Archive/frankmocap
 RUN sh scripts/install_frankmocap.sh
-
-## Install cmake
-WORKDIR /root
-RUN apt-get remove -y cmake && \ 
-    mkdir cmake && cd cmake && \
-    wget https://github.com/Kitware/CMake/releases/download/v3.24.2/cmake-3.24.2-linux-x86_64.sh && \
-    chmod 777 ./cmake-3.24.2-linux-x86_64.sh && \
-    ./cmake-3.24.2-linux-x86_64.sh --skip-license
-ENV PATH /home/cmake/bin:$PATH
 
 ## ntfy
 RUN python3 -m pip install git+https://github.com/dschep/ntfy.git@master --upgrade
