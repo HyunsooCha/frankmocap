@@ -14,6 +14,8 @@ def main(args):
 
     video_name = video_file.split('.')[0]
     raw_path = os.path.join(root_path, video_file)
+    if not os.path.exists('mocap_output'):
+        os.mkdir('mocap_output')
     path1 = os.path.join('mocap_output', video_name+'_frames')
     path2 = os.path.join('mocap_output', video_name+'_cropped_frames')
     output_dir = os.path.join('mocap_output', video_name+'_mocap_output')
@@ -37,6 +39,7 @@ def main(args):
     preds = fa.get_landmarks_from_directory(path1)
     print('[INFO] prediction by face alignment complete! time: ', time.time()-start)
 
+    fa.device = 'cpu' # to save cuda memory...
     print('[INFO] sorting...')
     start = time.time()
     idx = natsort.natsorted(preds)
@@ -45,7 +48,8 @@ def main(args):
 
     print('[INFO] save hand bounding boxes using frankmocap...')
     start = time.time()
-    os.system('xvfb-run -a python -m demo.demo_handmocap --input_path {} --out_dir {} --view_type ego_centric --save_bbox_output'.format(path1, output_dir))
+    os.system('./xvfb-run-safe python -m demo.demo_handmocap --input_path {} --out_dir {} --view_type ego_centric --save_bbox_output'.format(path1, output_dir))
+    # os.system('xvfb-run -a python -m demo.demo_handmocap --input_path {} --out_dir {} --view_type ego_centric --save_bbox_output'.format(path1, output_dir))
     # os.system('python -m demo.demo_handmocap --input_path {} --out_dir {} --view_type ego_centric --save_bbox_output --renderer_type pytorch3d'.format(path1, output_dir))
     print('[INFO] save hand bounding boxes complete! time: ', time.time()-start)
 
@@ -143,7 +147,7 @@ def main(args):
             print('Size Error')
 
     print('[INFO] cropping complete! time: ', time.time()-start)
-    os.system('ffmpeg -framerate 25 -i ' + os.path.join(path2, '%07d.png') + ' -c:v libx264 -profile:v high422 -pix_fmt yuv420p -c:a copy '+os.path.join(root_path, video_name+'_cropped.mp4')) # 
+    os.system('ffmpeg -framerate 25 -i ' + os.path.join(path2, '%07d.png') + ' -c:v libx264 -profile:v high422 -pix_fmt yuv420p -c:a copy '+os.path.join(root_path, video_name.replace('_temp', '')+'.mp4')) # 
     os.system('rm -rf '+path1)
     os.system('rm -rf '+path2)
     os.system('rm -rf '+output_dir)
@@ -151,8 +155,8 @@ def main(args):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--root_path', type=str, default='/home/stephencha/GitHub/frankmocap/sample_data/')
-    parser.add_argument('--video_file', type=str, default='syuka_train_2.mp4')
+    parser.add_argument('--root_path', type=str, default='/root/GitHub/frankmocap/sample_data/')
+    parser.add_argument('--video_file', type=str, default='han_short.mp4')
     parser.add_argument('--output_file_size', type=int, default=512)
 
     args = parser.parse_args()
