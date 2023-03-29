@@ -63,6 +63,9 @@ def main(args):
 
         if len(data['hand_bbox_list']) > 1: # 손이 2개 이상일 경우
             continue
+            
+        if len(data['hand_bbox_list']) > 0: # 손이 1개라도 나오면 그냥 다 잘라낼거다
+            continue
 
         left_bbox = data['hand_bbox_list'][-1]['left_hand']
         right_bbox = data['hand_bbox_list'][-1]['right_hand']
