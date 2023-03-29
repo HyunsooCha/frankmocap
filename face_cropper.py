@@ -144,7 +144,8 @@ def main(args):
             print('Size Error')
 
     print('[INFO] cropping complete! time: ', time.time()-start)
-    os.system('ffmpeg -framerate 25 -i ' + os.path.join(path2, '%07d.png') + ' -c:v libx264 -profile:v high422 -pix_fmt yuv420p -c:a copy '+os.path.join(root_path, video_name.replace('_temp', '')+'.mp4')) # 
+    # os.system('ffmpeg -framerate 25 -i ' + os.path.join(path2, '%07d.png') + ' -c:v libx264 -profile:v high422 -pix_fmt yuv420p -c:a copy '+os.path.join(root_path, video_name.replace('_temp', '')+'.mp4'))
+    os.system('ffmpeg -framerate 25 -i ' + os.path.join(path2, '%07d.png') + ' -c:v libx264 -profile:v high422 -pix_fmt yuv420p -c:a copy '+os.path.join(root_path, video_name+'_cropped.mp4'))
     os.system('rm -rf '+path1)
     os.system('rm -rf '+path2)
     os.system('rm -rf '+output_dir)
