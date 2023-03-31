@@ -20,6 +20,7 @@ from renderer.viewer2D import ImShow
 import time
 
 
+
 def run_hand_mocap(args, bbox_detector, hand_mocap, visualizer):
     #Set up input data (images or webcam)
     input_type, input_data = demo_utils.setup_input(args)
@@ -130,8 +131,9 @@ def run_hand_mocap(args, bbox_detector, hand_mocap, visualizer):
             ImShow(res_img)
 
         # save the image (we can make an option here)
-        if args.out_dir is not None:
-            demo_utils.save_res_img(args.out_dir, image_path, res_img)
+        # no save...
+        # if args.out_dir is not None:
+        #     demo_utils.save_res_img(args.out_dir, image_path, res_img)
 
         # save predictions to pkl
         if args.save_pred_pkl:
