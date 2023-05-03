@@ -187,19 +187,21 @@ def main(args):
             # print("Overlap ratio:", overlap_ratio)
             if overlap_ratio > 0.0:
                 continue        
-        
-        
 
         results = yolo_model(img)
         class_name_dict = {index: name for index, name in results.names.items()}
         # Filter the detected objects by class label 'cup' and a confidence threshold
 
+        # occlusion_candidate = [
+        #     'cup', 'baseball glove', 'tennis racket', 'bottle', 'wine glass', 
+        #     'fork', 'knife', 'spoon', 'bowl', 'banana', 
+        #     'apple', 'sandwich', 'orange', 'broccoli', 'carrot', 
+        #     'hot dog', 'pizza', 'donut', 'cake', 'cell phone', 
+        #     'scissors', 'hair drier', 'toothbrush'
+        #     ]
         occlusion_candidate = [
-            'cup', 'baseball glove', 'tennis racket', 'bottle', 'wine glass', 
-            'fork', 'knife', 'spoon', 'bowl', 'banana', 
-            'apple', 'sandwich', 'orange', 'broccoli', 'carrot', 
-            'hot dog', 'pizza', 'donut', 'cake', 'cell phone', 
-            'scissors', 'hair drier', 'toothbrush'
+            'cup', 'bottle', 'wine glass', 
+            'fork', 'knife', 'spoon', 'bowl', 'cell phone', 'scissors', 
             ]
         for label in occlusion_candidate:
             # cup_class_index = [k for k, v in class_name_dict.items() if v == 'cup'][0]
@@ -262,7 +264,7 @@ def main(args):
 
     print('[INFO] cropping complete! time: ', time.time()-start)
     # os.system('ffmpeg -framerate 25 -i ' + os.path.join(path2, '%07d.png') + ' -c:v libx264 -profile:v high422 -pix_fmt yuv420p -c:a copy '+os.path.join(root_path, video_name.replace('_temp', '')+'.mp4'))
-    os.system('ffmpeg -framerate 25 -i ' + os.path.join(path2, '%07d.png') + ' -c:v libx264 -profile:v high422 -pix_fmt yuv420p -c:a copy '+os.path.join(root_path, video_name+'_cropped.mp4'))
+    os.system('ffmpeg -framerate 25 -i ' + os.path.join(path2, '%07d.png') + ' -c:v libx264 -profile:v high422 -pix_fmt yuv420p -c:a copy '+os.path.join(root_path, video_name.replace('_orig', '')+'.mp4'))
     os.system('rm -rf '+path1)
     os.system('rm -rf '+path2)
     os.system('rm -rf '+output_dir)
