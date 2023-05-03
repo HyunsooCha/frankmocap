@@ -205,31 +205,32 @@ def main(args):
             # cup_class_index = [k for k, v in class_name_dict.items() if v == 'cup'][0]
             cup_class_index = [k for k, v in class_name_dict.items() if v == label][0]
             cup_results = results.xyxy[0][results.xyxy[0][:, 5] == cup_class_index]
-            cup_results = cup_results[cup_results[:, 4] > 0.0]
+            cup_results = cup_results[cup_results[:, 4] > 0.1]
 
             if len(cup_results) > 0:
                 print('[INFO] {} detected!'.format(label))
-                cup_xmin, cup_ymin, cup_xmax, cup_ymax, cup_confidence, cup_class = cup_results.squeeze()
-                cup_xmin, cup_ymin, cup_xmax, cup_ymax = cup_xmin.item(), cup_ymin.item(), cup_xmax.item(), cup_ymax.item()
-                hand_box = [cup_xmin, cup_ymin, cup_xmax-cup_xmin, cup_ymax-cup_ymin]
-                # Compute the (x, y) coordinates of the intersection
-                x1, y1 = max(face_box[0], hand_box[0]), max(face_box[1], hand_box[1])
-                x2, y2 = min(face_box[0] + face_box[2], hand_box[0] + hand_box[2]), min(face_box[1] + face_box[3], hand_box[1] + hand_box[3])
+                for cups in range(cup_results.shape[0]):
+                    cup_xmin, cup_ymin, cup_xmax, cup_ymax, cup_confidence, cup_class = cup_results[cups]
+                    cup_xmin, cup_ymin, cup_xmax, cup_ymax = cup_xmin.item(), cup_ymin.item(), cup_xmax.item(), cup_ymax.item()
+                    hand_box = [cup_xmin, cup_ymin, cup_xmax-cup_xmin, cup_ymax-cup_ymin]
+                    # Compute the (x, y) coordinates of the intersection
+                    x1, y1 = max(face_box[0], hand_box[0]), max(face_box[1], hand_box[1])
+                    x2, y2 = min(face_box[0] + face_box[2], hand_box[0] + hand_box[2]), min(face_box[1] + face_box[3], hand_box[1] + hand_box[3])
 
-                # Compute the area of the intersection
-                intersection_area = max(0, x2 - x1) * max(0, y2 - y1)
+                    # Compute the area of the intersection
+                    intersection_area = max(0, x2 - x1) * max(0, y2 - y1)
 
-                # Compute the areas of the two bounding boxes
-                face_area = face_box[2] * face_box[3]
-                hand_area = hand_box[2] * hand_box[3]
+                    # Compute the areas of the two bounding boxes
+                    face_area = face_box[2] * face_box[3]
+                    hand_area = hand_box[2] * hand_box[3]
 
-                # Compute the overlap ratio
-                overlap_ratio = intersection_area / min(face_area, hand_area)
+                    # Compute the overlap ratio
+                    overlap_ratio = intersection_area / min(face_area, hand_area)
 
-                # Print the overlap ratio
-                # print("Overlap ratio:", overlap_ratio)
-                if overlap_ratio > 0.0:
-                    continue
+                    # Print the overlap ratio
+                    # print("Overlap ratio:", overlap_ratio)
+                    if overlap_ratio > 0.0:
+                        continue
 
 
         # # Compute the new (x, y) coordinates of the top-left corner
