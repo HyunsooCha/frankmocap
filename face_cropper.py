@@ -265,10 +265,9 @@ def main(args):
     print('[INFO] cropping complete! time: ', time.time()-start)
     # os.system('ffmpeg -framerate 25 -i ' + os.path.join(path2, '%07d.png') + ' -c:v libx264 -profile:v high422 -pix_fmt yuv420p -c:a copy '+os.path.join(root_path, video_name.replace('_temp', '')+'.mp4'))
     os.system('ffmpeg -framerate 25 -i ' + os.path.join(path2, '%07d.png') + ' -c:v libx264 -profile:v high422 -pix_fmt yuv420p -c:a copy '+os.path.join(root_path, video_name.replace('_orig', '')+'.mp4'))
-    os.system('rm -rf '+path1)
-    os.system('rm -rf '+path2)
-    os.system('rm -rf '+output_dir)
+    
     print('[INFO] video saved! time: ', time.time()-start)
+    return path1, path2, output_dir
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -278,7 +277,10 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    main(args)
+    path1, path2, output_dir = main(args)
+    # os.system('rm -rf '+path1)
+    # os.system('rm -rf '+path2)
+    # os.system('rm -rf '+output_dir)
 
 
 
