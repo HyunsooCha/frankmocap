@@ -1,4 +1,7 @@
 #!/bin/zsh
+docker stop frankmocap
+docker rm frankmocap
+docker rmi frankmocap:0.1
 set -e
 
 docker build ../ -t frankmocap:0.1
@@ -14,6 +17,8 @@ docker run -d -it --gpus=all --shm-size=120G \
 echo "[INFO] docker run finished"
 docker start frankmocap
 echo "[INFO] docker start finished"
+docker exec frankmocap rm -rf detectors
+docker exec frankmocap rm -rf extra_data
 docker exec frankmocap sh scripts/install_frankmocap.sh
 docker exec frankmocap sh -c 'mkdir -p ./extra_data/smpl && \
     cd ./extra_data/smpl && \
@@ -22,3 +27,8 @@ docker exec frankmocap sh -c 'mkdir -p ./extra_data/smpl && \
     cd ../../'
 echo "[INFO] install_frankmocap finished"
 docker attach --detach-keys "ctrl-z" frankmocap
+
+docker exec frankmocap git config --global --add safe.directory /root/GitHub/frankmocap
+docker exec frankmocap git config --global user.email "729steven@gmail.com"
+docker exec frankmocap git config --global user.name "Hyunsoo Cha"
+docker exec frankmocap git config --global credential.helper store
