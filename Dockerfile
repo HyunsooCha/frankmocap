@@ -134,7 +134,7 @@ WORKDIR /root/GitHub/
 RUN pip install ninja && \
     pip install "git+https://github.com/facebookresearch/pytorch3d.git"
 
-RUN pip install numpy face_alignment natsort pandas seaborn
+RUN pip install numpy face_alignment natsort pandas seaborn ultralytics
 RUN pip install pip torchgeometry gdown opencv-python PyOpenGL PyOpenGL_accelerate pycocotools pafy youtube-dl scipy pillow easydict cython cffi msgpack pyyaml tensorboardX tqdm jinja2 smplx scikit-learn opendr chumpy
 
 # WORKDIR /root/Archive
