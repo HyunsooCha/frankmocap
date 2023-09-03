@@ -80,7 +80,6 @@ def main(args):
     start = time.time()
     os.system('./xvfb-run-safe python -m demo.demo_handmocap --input_path {} --out_dir {} --view_type ego_centric --save_bbox_output'.format(path1, output_dir))
 
-
     # os.system('xvfb-run -a python -m demo.demo_handmocap --input_path {} --out_dir {} --view_type ego_centric --save_bbox_output'.format(path1, output_dir))
     # os.system('python -m demo.demo_handmocap --input_path {} --out_dir {} --view_type ego_centric --save_bbox_output --renderer_type pytorch3d'.format(path1, output_dir))
     print('[INFO] save hand bounding boxes complete! time: ', time.time()-start)
@@ -92,7 +91,10 @@ def main(args):
     face_detector_kwargs = {
         'filter_threshold': 0.99,
     }
-    fa = face_alignment.FaceAlignment(face_alignment.LandmarksType._2D, flip_input=False, face_detector=face_detector, face_detector_kwargs=face_detector_kwargs, device='cuda')
+    try:
+        fa = face_alignment.FaceAlignment(face_alignment.LandmarksType._2D, flip_input=False, face_detector=face_detector, face_detector_kwargs=face_detector_kwargs, device='cuda')
+    except:
+        fa = face_alignment.FaceAlignment(face_alignment.LandmarksType.TWO_D, flip_input=False, face_detector=face_detector, face_detector_kwargs=face_detector_kwargs, device='cuda')
 
     preds = fa.get_landmarks_from_directory(path1)
     print('[INFO] prediction by face alignment complete! time: ', time.time()-start)
@@ -254,7 +256,7 @@ def main(args):
 
     print('[INFO] cropping complete! time: ', time.time()-start)
     # os.system('ffmpeg -framerate 25 -i ' + os.path.join(path2, '%07d.png') + ' -c:v libx264 -profile:v high422 -pix_fmt yuv420p -c:a copy '+os.path.join(root_path, video_name.replace('_temp', '')+'.mp4'))
-    os.system('ffmpeg -framerate 25 -i ' + os.path.join(path2, '%07d.png') + ' -c:v libx264 -profile:v high422 -pix_fmt yuv420p -c:a copy '+os.path.join(root_path, video_name.replace('_orig', '')+'.mp4'))
+    os.system('ffmpeg -y -framerate 25 -i ' + os.path.join(path2, '%07d.png') + ' -c:v libx264 -profile:v high422 -pix_fmt yuv420p -c:a copy '+os.path.join(root_path, video_name.replace('_orig', '')+'.mp4'))
     
     print('[INFO] video saved! time: ', time.time()-start)
     return path1, path2, output_dir
