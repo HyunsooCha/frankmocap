@@ -58,7 +58,7 @@ def main(args):
     root_path = args.root_path
     video_file = args.video_file
     output_file_size = tuple([args.output_file_size, args.output_file_size])
-    total_frame = 7500 # 25 frames \times 60 seconds \times 5 minutes
+    total_frame = 4500 # 25 frames \times 60 seconds \times 3 minutes
 
     video_name = video_file.split('.')[0]
     raw_path = os.path.join(root_path, video_file)
@@ -270,9 +270,9 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     path1, path2, output_dir = main(args)
-    shutil.rmtree(path1)
-    shutil.rmtree(path2)
-    shutil.rmtree(output_dir)
+    # shutil.rmtree(path1)
+    # shutil.rmtree(path2)
+    # shutil.rmtree(output_dir)
 
 
 
