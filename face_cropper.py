@@ -119,7 +119,7 @@ def main(args):
 
     print('[INFO] cropping...')
 
-    yolo_model = torch.hub.load('ultralytics/yolov5', 'yolov5s')
+    # yolo_model = torch.hub.load('ultralytics/yolov5', 'yolov5s')
 
     start = time.time()
     order = 0
@@ -205,8 +205,8 @@ def main(args):
             if overlap_ratio > 0.0:
                 continue        
 
-        results = yolo_model(img)
-        class_name_dict = {index: name for index, name in results.names.items()}
+        # results = yolo_model(img)
+        # class_name_dict = {index: name for index, name in results.names.items()}
         # Filter the detected objects by class label 'cup' and a confidence threshold
 
         # occlusion_candidate = [
