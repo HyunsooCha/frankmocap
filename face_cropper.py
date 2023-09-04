@@ -78,28 +78,34 @@ def main(args):
     
     print('[INFO] save hand bounding boxes using frankmocap...')
     start = time.time()
-    os.system('./xvfb-run-safe python -m demo.demo_handmocap --input_path {} --out_dir {} --view_type ego_centric --save_bbox_output'.format(path1, output_dir))
-
+    # NOTE previous version
+    # os.system('./xvfb-run-safe python -m demo.demo_handmocap --input_path {} --out_dir {} --view_type ego_centric --save_bbox_output'.format(path1, output_dir))
+    os.system('./run_frankmocap.sh {} {}'.format(path1, output_dir))
     # os.system('xvfb-run -a python -m demo.demo_handmocap --input_path {} --out_dir {} --view_type ego_centric --save_bbox_output'.format(path1, output_dir))
     # os.system('python -m demo.demo_handmocap --input_path {} --out_dir {} --view_type ego_centric --save_bbox_output --renderer_type pytorch3d'.format(path1, output_dir))
     print('[INFO] save hand bounding boxes complete! time: ', time.time()-start)
 
-
     print('[INFO] get the face bounding box and predict the face keypoint using face alignment...')
     start = time.time()
-    face_detector = 'sfd'
-    face_detector_kwargs = {
-        'filter_threshold': 0.99,
-    }
-    try:
-        fa = face_alignment.FaceAlignment(face_alignment.LandmarksType._2D, flip_input=False, face_detector=face_detector, face_detector_kwargs=face_detector_kwargs, device='cuda')
-    except:
-        fa = face_alignment.FaceAlignment(face_alignment.LandmarksType.TWO_D, flip_input=False, face_detector=face_detector, face_detector_kwargs=face_detector_kwargs, device='cuda')
+    
+    if not os.path.exists(os.path.join(output_dir, '{}_face_keypoints.npy'.format(video_name))):
+        face_detector = 'sfd'
+        face_detector_kwargs = {
+            'filter_threshold': 0.99,
+        }
+        try:
+            fa = face_alignment.FaceAlignment(face_alignment.LandmarksType._2D, flip_input=False, face_detector=face_detector, face_detector_kwargs=face_detector_kwargs, device='cuda')
+        except:
+            fa = face_alignment.FaceAlignment(face_alignment.LandmarksType.TWO_D, flip_input=False, face_detector=face_detector, face_detector_kwargs=face_detector_kwargs, device='cuda')
 
-    preds = fa.get_landmarks_from_directory(path1)
-    print('[INFO] prediction by face alignment complete! time: ', time.time()-start)
+        preds = fa.get_landmarks_from_directory(path1)
+        print('[INFO] prediction by face alignment complete! time: ', time.time()-start)
 
-    fa.device = 'cpu' # to save cuda memory...
+        np.save(os.path.join(output_dir, '{}_face_keypoints.npy'.format(video_name)), preds)
+        fa.device = 'cpu' # to save cuda memory...
+    else:
+        preds = np.load(os.path.join(output_dir, '{}_face_keypoints.npy'.format(video_name)))
+        print('[INFO] load face keypoints complete! time: ', time.time()-start)
     idx = natsort.natsorted(preds)
     # half_size = output_file_size[0]//2
     
