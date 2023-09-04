@@ -88,7 +88,7 @@ def main(args):
     print('[INFO] get the face bounding box and predict the face keypoint using face alignment...')
     start = time.time()
     
-    if not os.path.exists(os.path.join(output_dir, '{}_face_keypoints.npy'.format(video_name))):
+    if not os.path.exists(os.path.join(output_dir, '{}_face_keypoints_{}.npy'.format(video_name, total_frame))):
         face_detector = 'sfd'
         face_detector_kwargs = {
             'filter_threshold': 0.99,
@@ -104,7 +104,7 @@ def main(args):
         np.save(os.path.join(output_dir, '{}_face_keypoints.npy'.format(video_name)), preds)
         fa.device = 'cpu' # to save cuda memory...
     else:
-        preds = np.load(os.path.join(output_dir, '{}_face_keypoints.npy'.format(video_name)))
+        preds = np.load(os.path.join(output_dir, '{}_face_keypoints_{}.npy'.format(video_name, total_frame)))
         print('[INFO] load face keypoints complete! time: ', time.time()-start)
     idx = natsort.natsorted(preds)
     # half_size = output_file_size[0]//2
