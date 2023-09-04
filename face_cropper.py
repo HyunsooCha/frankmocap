@@ -146,8 +146,8 @@ def main(args):
             height = y2_face-y1_face
             init_check = False
 
-
-        expanded_face_bbox = expand_bbox_asymmetrically_square((center_x, center_y, width, height), img_width=img.size[0], img_height=img.size[1], upper_height_factor=2.6, lower_height_factor=2.6)
+        # NOTE previously, 2.6, 2.6
+        expanded_face_bbox = expand_bbox_asymmetrically_square((center_x, center_y, width, height), img_width=img.size[0], img_height=img.size[1], upper_height_factor=2.8, lower_height_factor=2.7)
         face_box = expanded_face_bbox
 
         if left_bbox is not None:
