@@ -67,6 +67,12 @@ def main(args):
     path1 = os.path.join('mocap_output', video_name+'_frames')
     path2 = os.path.join('mocap_output', video_name+'_cropped_frames')
     output_dir = os.path.join('mocap_output', video_name+'_mocap_output')
+    if os.path.exists(path1):
+        shutil.rmtree(path1)
+    if os.path.exists(path2):
+        shutil.rmtree(path2)
+    if os.path.exists(output_dir):
+        shutil.rmtree(output_dir)
     if not os.path.exists(path1):
         os.makedirs(path1)
     if not os.path.exists(path2):
@@ -88,7 +94,8 @@ def main(args):
     print('[INFO] get the face bounding box and predict the face keypoint using face alignment...')
     start = time.time()
     
-    if not os.path.exists(os.path.join(output_dir, '{}_face_keypoints_{}.npy'.format(video_name, total_frame))):
+    face_keypoints_filename = '{}_face_keypoints_{}.npy'.format(video_name, total_frame)
+    if not os.path.exists(os.path.join('mocap_output', face_keypoints_filename)):
         face_detector = 'sfd'
         face_detector_kwargs = {
             'filter_threshold': 0.99,
@@ -101,10 +108,10 @@ def main(args):
         preds = fa.get_landmarks_from_directory(path1)
         print('[INFO] prediction by face alignment complete! time: ', time.time()-start)
 
-        np.save(os.path.join(output_dir, '{}_face_keypoints.npy'.format(video_name)), preds)
+        np.save(os.path.join('mocap_output', face_keypoints_filename), preds)
         fa.device = 'cpu' # to save cuda memory...
     else:
-        preds = np.load(os.path.join(output_dir, '{}_face_keypoints_{}.npy'.format(video_name, total_frame)))
+        preds = np.load(os.path.join('mocap_output', face_keypoints_filename))
         print('[INFO] load face keypoints complete! time: ', time.time()-start)
     idx = natsort.natsorted(preds)
     # half_size = output_file_size[0]//2
@@ -276,9 +283,5 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     path1, path2, output_dir = main(args)
-    # shutil.rmtree(path1)
-    # shutil.rmtree(path2)
-    # shutil.rmtree(output_dir)
-
 
 
