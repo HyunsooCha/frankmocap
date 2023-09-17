@@ -86,7 +86,7 @@ def main(args):
     start = time.time()
     # NOTE previous version
     # os.system('./xvfb-run-safe python -m demo.demo_handmocap --input_path {} --out_dir {} --view_type ego_centric --save_bbox_output'.format(path1, output_dir))
-    os.system('./run_frankmocap.sh {} {} {}'.format(args.device, path1, output_dir))
+    os.system('./run_frankmocap.sh {} {} {}'.format(0, path1, output_dir))
     # os.system('xvfb-run -a python -m demo.demo_handmocap --input_path {} --out_dir {} --view_type ego_centric --save_bbox_output'.format(path1, output_dir))
     # os.system('python -m demo.demo_handmocap --input_path {} --out_dir {} --view_type ego_centric --save_bbox_output --renderer_type pytorch3d'.format(path1, output_dir))
     print('[INFO] save hand bounding boxes complete! time: ', time.time()-start)
@@ -279,7 +279,6 @@ if __name__ == '__main__':
     parser.add_argument('--root_path', type=str, default='/root/GitHub/frankmocap/sample_data/')
     parser.add_argument('--video_file', type=str, default='friendshipping_1.mp4')
     parser.add_argument('--output_file_size', type=int, default=512)
-    parser.add_argument('--device', type=int, default=0)
 
     args = parser.parse_args()
 
