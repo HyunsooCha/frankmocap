@@ -95,7 +95,7 @@ def main(args):
     start = time.time()
     
     face_keypoints_filename = '{}_face_keypoints_{}.npy'.format(video_name, total_frame)
-    if not os.path.exists(os.path.join('mocap_output', face_keypoints_filename)):
+    if not os.path.exists(os.path.join(root_path, face_keypoints_filename)):
         face_detector = 'sfd'
         face_detector_kwargs = {
             'filter_threshold': 0.99,
@@ -108,10 +108,10 @@ def main(args):
         preds = fa.get_landmarks_from_directory(path1)
         print('[INFO] prediction by face alignment complete! time: ', time.time()-start)
 
-        np.save(os.path.join('mocap_output', face_keypoints_filename), preds)
+        np.save(os.path.join(root_path, face_keypoints_filename), preds)
         fa.device = 'cpu' # to save cuda memory...
     else:
-        preds = np.load(os.path.join('mocap_output', face_keypoints_filename))
+        preds = np.load(os.path.join(root_path, face_keypoints_filename))
         print('[INFO] load face keypoints complete! time: ', time.time()-start)
     idx = natsort.natsorted(preds)
     # half_size = output_file_size[0]//2
