@@ -79,6 +79,15 @@ def run_hand_mocap(args, bbox_detector, hand_mocap, visualizer):
                     cv2.imwrite(image_path, img_original_bgr)
         else:
             assert False, "Unknown input_type"
+        
+        # skip code
+        img_name = osp.basename(image_path)
+        record = img_name.split('.')
+        json_name = f"{'.'.join(record[:-1])}_bbox.json"
+        json_path = osp.join(args.out_dir, 'bbox', json_name)
+        if osp.exists(json_path):
+            print('[INFO] json file {} already exists. Skip.'.format(json_path))
+            continue
 
         cur_frame +=1
         if img_original_bgr is None or cur_frame > args.end_frame:
