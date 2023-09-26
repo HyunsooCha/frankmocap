@@ -95,6 +95,10 @@ def main(args):
     start = time.time()
     
     face_keypoints_filename = '{}_face_keypoints_{}.npy'.format(video_name, total_frame)
+
+    if os.path.exists(os.path.join(root_path, face_keypoints_filename)):
+        os.remove(os.path.join(root_path, face_keypoints_filename))
+        
     if not os.path.exists(os.path.join(root_path, face_keypoints_filename)):
         face_detector = 'sfd'
         face_detector_kwargs = {
