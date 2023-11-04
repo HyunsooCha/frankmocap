@@ -94,7 +94,7 @@ def run_hand_mocap(args, bbox_detector, hand_mocap, visualizer):
             break   
         print("--------------------------------------")
 
-        # bbox detection
+        # bbox detection\
         if load_bbox:
             body_pose_list = None
             raw_hand_bboxes = None
