@@ -9,8 +9,14 @@ echo "[INFO] docker build finished"
 docker run -d -it --gpus=all --shm-size=120G \
     -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=unix:1 \
     -v $HOME/GitHub/frankmocap:/root/GitHub/frankmocap \
+<<<<<<< HEAD
     -v $HOME/GitHub/pegasus:/root/GitHub/pegasus \
     -v $HOME/GitHub/pegasus/data/datasets:/root/GitHub/pegasus/data/datasets \
+=======
+    -v $HOME/GitHub/frankmocap/mocap_output:/root/GitHub/frankmocap/mocap_output \
+    -v $HOME/GitHub/IMavatar:/root/GitHub/IMavatar \
+    -v $HOME/GitHub/IMavatar/data/datasets:/root/GitHub/IMavatar/data/datasets \
+>>>>>>> 3b2a1d9a0d49ef1c0faae6ebba6b7dd6e9c194b5
     --name frankmocap \
     frankmocap:0.1
 echo "[INFO] docker run finished"
